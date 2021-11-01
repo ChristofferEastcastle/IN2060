@@ -1,4 +1,4 @@
-/**
+	/**
  * This is the main file which will benchmark your FFT code against FFTW.
  *
  * You will *not* need to edit this file and for your delivery we will not
@@ -33,14 +33,15 @@ void fill_random(fftw_complex* in, const int size) {
 
 int main(int argc, char** argv) {
 	// Declare input parameters
-	int size = 0;
+	int size = 16;
+	argc = 2;
 	// Check input arguments
 	if(argc < 2) {
 		printf("Too few arguments, expected one: N (size of FFT)\n");
 		exit(EXIT_FAILURE);
 	} else {
 		// Convert input to integer
-		size = strtol(argv[1], NULL, 10);
+	//	size = strtol(argv[1], NULL, 10);
 		// Ensure we got a power of 2
 		if((size & (size - 1)) != 0) {
 			printf("FFT size must be a power of 2! Was: %i\n",

@@ -9,11 +9,12 @@
 #include <math.h>
 // Included to get access to `malloc` and `free`
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct {
-	int n;
+	int i;
 	complex w;
-} cache_struct;
+} strct;
 
 // Forward declaration of helper methods
 void get_even(const complex* in, complex* out, const int n) {
@@ -29,10 +30,19 @@ void get_odd(const complex* in, complex* out, const int n) {
 		out[i] = in[2 * i + 1];
 	}
 }
-complex* cache = NULL;
+int* cache = NULL;
 
 void init_cache(int n) {
-	cache = calloc(n, sizeof(cache_struct));
+	cache = malloc(((n / 2) + 1) * sizeof(int*));
+	
+	for (int i = 0; i < n / 2 + 1; i++) {
+		int* arr = malloc(n / 2 * sizeof(int*));
+		cache[i] = (int) &arr;
+		for (int j = 0; j < n / 2; j++) {
+			strct str = {-1, -1};
+			arr[j] = (int) &str;
+		}
+	}
 }
 
 void fft_compute(const complex* in, complex* out, const int n) {
@@ -58,12 +68,17 @@ void fft_compute(const complex* in, complex* out, const int n) {
 			const complex e = even_out[i];
 			const complex o = odd_out[i];
 			complex w;
-			if (*cache[i]->n == n) {
-				w = *cache[i]->w;
+			strct* str = (strct*) cache[n];
+			printf("%d : jhasdfkdshjfk\n", str->i);	
+			
+			if (str->i == i) {
+				w = str->w;
+				printf("%d i am hererree\n", w);
 			} else {
 				w = cexp(0 - (2. * M_PI * i) / n * I);
-				cache_struct strct = {n, w};
-				cache[i] = strct;
+				printf("%d\n i calculated shittt\n", w);
+				strct strct = {i, w};
+				cache[n] = (int) &strct;
 			}
 			
 			out[i]        = e + w * o;
