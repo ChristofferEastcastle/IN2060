@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 typedef struct {
 	int i;
 	complex w;
@@ -30,19 +31,30 @@ void get_odd(const complex* in, complex* out, const int n) {
 		out[i] = in[2 * i + 1];
 	}
 }
-int* cache = NULL;
+int** cache = NULL;
 
 void init_cache(int n) {
-	cache = malloc(((n / 2) + 1) * sizeof(int*));
+	int half = n / 2;
+	cache = malloc((1 + half) * sizeof(int*));
+	int* arr = malloc(sizeof(int)* half + 1 * half);
 	
-	for (int i = 0; i < n / 2 + 1; i++) {
-		int* arr = malloc(n / 2 * sizeof(int*));
-		cache[i] = (int) &arr;
-		for (int j = 0; j < n / 2; j++) {
-			strct str = {-1, -1};
-			arr[j] = (int) &str;
+	
+	for (int i = 0; i <= half; i++) {
+		cache[i] = &arr[i * half];
+	}
+	
+	for (int i = 0; i <= half; i++) {
+		for (int j = 0; j < half; j++) {
+			cache[i][j] = 0;
 		}
 	}
+	for (int i = 0; i <= half; i++) {
+		for (int j = 0; j < half; j++) {
+			printf("%d ", cache[i][j]);
+		}
+		printf("\n");
+	}
+	printf("half complex is : %d\n", cache[8][5]);
 }
 
 void fft_compute(const complex* in, complex* out, const int n) {
@@ -68,19 +80,19 @@ void fft_compute(const complex* in, complex* out, const int n) {
 			const complex e = even_out[i];
 			const complex o = odd_out[i];
 			complex w;
-			strct* str = (strct*) cache[n];
-			printf("%d : jhasdfkdshjfk\n", str->i);	
 			
-			if (str->i == i) {
-				w = str->w;
-				printf("%d i am hererree\n", w);
+			if (cache[n][i] != 0) {
+				
+				w = *(complex*) cache[n - half][i];
+				printf("extracted w:%d from [%d][%d] \n", w, n, i);
 			} else {
 				w = cexp(0 - (2. * M_PI * i) / n * I);
-				printf("%d\n i calculated shittt\n", w);
-				strct strct = {i, w};
-				cache[n] = (int) &strct;
+				printf("added w:%d to [%d][%d]\n", w, n, i);
+				complex * d = malloc(sizeof(complex));
+				*d = w;
+				cache[n - half][i] = (int) &w;
 			}
-			
+			//const complex w = cexp(0 - (2. * M_PI * i) / n * I);
 			out[i]        = e + w * o;
 			out[i + half] = e - w * o;
 		}

@@ -1,0 +1,10 @@
+1. Det er egentlig ikke så veldig store forskjeller. Hovedsaklig bruker compileren en hel del labels, noe min kode 
+ikke har spesielt mye av. Compileren er også flink på å stacke verdier den midlertidig kommer til å endre på. Dette
+har ikke jeg behov for i mitt lille program.
+
+2. Her prøver compileren å optimalisere koden. Dette kan gjøre koden mindre lesbar men ofte kjører den raskere. I
+dette tilfellet har det ikke stor betydning siden koden er så liten i utganspunktet.
+
+3. Det er absolutt å foretrekke å bruke en compiler sammenlignet med å skrive i Assembler. Dette fordi man "bare"
+trenger å skrive en compiler for hver arkitektur og derfor kan man overføre program til ulike arkitekturer enklere.
+Fordelen med å skrive i Assembler er at man lettere kan optimalisere for akkurat denne datamaskinen sin hardware.

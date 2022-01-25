@@ -1,0 +1,8 @@
+1.
+Det er caller som må sørge for at verdier i r0-r3 er lagret. Disse blir brukt som argument til callee. Callee skal sette returverdien i r0 før den returnerer. Det er callee sitt ansvar å ikke bruke r4-r11 og lr.
+
+2.
+Input argumentet til fib blir byttet ut med returverdien fra fib. Om det ønskes kan dette lagres i enten r4-r11 eller på stack.
+
+3.
+Jeg måtte først pushe LR på stacken for hvert funksjonskall, og deretter poppe LR av før funksjonen skulle returnere. Dette fordi LR blir endret underveis og programmet må alltid ha riktig returadresse for å kunne avslutte riktig. Det er lett å få segmentation fault om man ikke gjør dette.
